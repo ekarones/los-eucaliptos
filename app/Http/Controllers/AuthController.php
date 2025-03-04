@@ -33,9 +33,6 @@ class AuthController extends Controller
         // Autenticar al usuario y crear un token
         $token = $usuario->createToken('LoginToken')->plainTextToken;
 
-        // Obtener el rol del usuario
-        $rol = $usuario->rol;
-
         return response()->json([
             'message' => 'Login exitoso',
             'token' => $token,

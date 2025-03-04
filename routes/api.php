@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 
 
-//acceso mediaten login con token
+//acceso mediante login
 Route::post('login', [AuthController::class, 'login']);
 
 Route::apiResource('usuarios', UsuarioController::class);
