@@ -5,13 +5,11 @@ use App\Http\Controllers\UsuarioPermiso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\UsuarioPermisoController;
 
 
 //acceso mediaten login con token
 Route::post('login', [AuthController::class, 'login']);
 
-//permisos de usuario
 Route::apiResource('usuarios', UsuarioController::class);
 
 
