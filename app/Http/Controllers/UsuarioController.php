@@ -18,7 +18,7 @@ class UsuarioController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'email1' => 'required|email',
+            'email1' => 'required|email1',
             'password' => 'required|string|min:6',
             'estado' => 'required|boolean',
         ]);

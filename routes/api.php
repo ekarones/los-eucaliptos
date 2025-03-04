@@ -11,12 +11,8 @@ use App\Http\Controllers\UsuarioPermisoController;
 //acceso mediaten login con token
 Route::post('login', [AuthController::class, 'login']);
 
-
-
 //permisos de usuario
-Route::apiResource('permisos', UsuarioPermiso::class);
 Route::apiResource('usuarios', UsuarioController::class);
-Route::apiResource('permisos_usuario', UsuarioPermisoController::class);
 
 
 /*
