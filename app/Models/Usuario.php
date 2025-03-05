@@ -15,7 +15,6 @@ class Usuario extends Model
     protected $fillable = [
         'name',
         'email',
-        'email1',
         'password',
         'estado'
     ];
@@ -24,4 +23,9 @@ class Usuario extends Model
         'password',
         'remember_token',
     ];
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 }

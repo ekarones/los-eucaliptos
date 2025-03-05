@@ -8,17 +8,17 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
+
     public function index()
     {
-        return response()->json(Usuario::all());
+        return response()->json(Usuario::all(), 200);
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'email1' => 'required|email1',
+            'email' => 'required|email|unique:usuarios,email',
             'password' => 'required|string|min:6',
             'estado' => 'required|boolean',
         ]);
@@ -26,51 +26,51 @@ class UsuarioController extends Controller
         $usuario = Usuario::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'email1' => $validatedData['email1'],
             'password' => Hash::make($validatedData['password']),
             'estado' => $validatedData['estado'],
-
         ]);
 
         return response()->json([
             'message' => 'Usuario creado correctamente',
-            'usuario' => $usuario
+            //'usuario' => $usuario
         ], 201);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $usuario = Usuario::find($id);
+
         if (!$usuario) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:usuarios,email,'.$usuario->id,
-            'email1' => 'required|email|unique:usuarios,email1,'.$usuario->id,
-            'password' => 'nullable|string|min:6',
-            'estado' => 'required|boolean',
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:usuarios,email,' . $usuario->id,
+            'password' => 'sometimes|string|min:6',
+            'estado' => 'sometimes|boolean',
         ]);
 
-        $usuario->name = $validatedData['name'];
-        $usuario->email = $validatedData['email'];
-        $usuario->email1 = $validatedData['email1'];
-        if (!empty($validatedData['password'])) {
-            $usuario->password = Hash::make($validatedData['password']);
+        if (isset($validatedData['password'])) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
         }
-        $usuario->estado = $validatedData['estado'];
-        $usuario->save();
+
+        $usuario->update($validatedData);
 
         return response()->json([
             'message' => 'Usuario actualizado correctamente',
-            'usuario' => $usuario
+            //'usuario' => $usuario
         ], 200);
     }
 
-    public function destroy(Usuario $usuario){
-        $usuario->delete();
-        return response()->json(['message' => 'Usuario eliminado con exito'],200);
-    }
 
+    public function destroy(Usuario $usuario)
+    {
+        if (!$usuario) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+        $usuario->delete();
+        return response()->json(['message' => 'Usuario eliminado con éxito'], 200);
+    }
 }
